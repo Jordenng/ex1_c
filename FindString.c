@@ -20,7 +20,7 @@ int openFile(char wantedWord[257], char* filePath)
     char *pLine;
 //    char new_line;
 //    char *beginningOfTheWord;
-    int i = 0;
+//    int i = 0;
 
 
     FILE *file = fopen(filePath, "rt"); // opening the file
@@ -40,6 +40,7 @@ int openFile(char wantedWord[257], char* filePath)
 //        }
 //        i = 0;
         pLine = line;
+        int i =0;
         char a = tolower(wantedWord[i]);
 //        beginningOfTheWord = strchr(line,
 //                                    tolower(wantedWord[0])); // We found the first letter, and we can continue searching
@@ -53,19 +54,25 @@ int openFile(char wantedWord[257], char* filePath)
                     break;
                 }
                 int j = 1;
+                int ok = 1;
                 for (j; j < strlen(wantedWord); j++)
                 {
 
                     if (tolower(pLine[i + j]) != tolower(wantedWord[j]))
                     {
+                        ok = 0;
                         break;
                     }
 
                 }
-                printf("%s \n", line);
-                break;
+                if (ok)
+                {
+                    printf("%s \n", line);
+                    break;
+                }
             }
         }
+//        memset(line, 0, sizeof(line));
     }
     return 0;
 }
