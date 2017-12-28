@@ -14,11 +14,12 @@
  * @param argc - argument count.
  * @return -1 if the word isn't found, other wise 0.
  */
-int openFile(char wantedWord[257], char* filePath, int length, int argc)
+int openFile(char wantedWord[257], char* filePath)
 {
     char line[257];
     char *pLine;
-    char *beginningOfTheWord;
+//    char new_line;
+//    char *beginningOfTheWord;
     int i = 0;
 
 
@@ -32,28 +33,37 @@ int openFile(char wantedWord[257], char* filePath, int length, int argc)
 
     while (fgets(line, 256, file) != NULL) // there is an existing file
     {
+//        pLine = line;
+//        for (i = 0; pLine[i]; i++) // converting to the lower letter
+//        {
+//            pLine[i] = (char) tolower(pLine[i]);
+//        }
+//        i = 0;
         pLine = line;
-        for (int i; pLine[i]; i++) // converting to the lower letter
+        char a = tolower(wantedWord[i]);
+//        beginningOfTheWord = strchr(line,
+//                                    tolower(wantedWord[0])); // We found the first letter, and we can continue searching
+        for (i = 0; i < 256; i++)
         {
-            pLine[i] = (char) tolower(pLine[i]);
-        }
-        beginningOfTheWord = strchr(line, wantedWord[0]); // We found the first letter, and we can continue searching
-        while (beginningOfTheWord != NULL && *beginningOfTheWord == wantedWord[i])
-        {
-            if (*beginningOfTheWord != wantedWord[i]) // searching the rest of line
+
+            if (tolower(pLine[i]) == a)
             {
-                beginningOfTheWord = strchr((line + 1), wantedWord[0]);
-                i = 0;
-            }
-            i++;
-            beginningOfTheWord++;
-            if (i == length) // this means we found the entire word
-            {
-                if (argc == 3)
+                if (pLine[i] == '\n')
                 {
-                    printf("%s \n", line); // this prints the row
+                    break;
                 }
-                return 0;
+                int j = 1;
+                for (j; j < strlen(wantedWord); j++)
+                {
+
+                    if (tolower(pLine[i + j]) != tolower(wantedWord[j]))
+                    {
+                        break;
+                    }
+
+                }
+                printf("%s \n", line);
+                break;
             }
         }
     }
@@ -69,11 +79,9 @@ int openFile(char wantedWord[257], char* filePath, int length, int argc)
 
 int main(int argc, char *argv[])
 {
-//    char wantedWord[257];
     char *wantedWord = argv[1];
     char *pWantedWord = wantedWord;
-//    int numOfTheFiles = argc - 2;
-    int length = (int)strlen(argv[1]);
+//    int length = (int)strlen(argv[1]);
     int foundWord = 0;
 
     if (argc < 3) // not enough arguments
@@ -86,11 +94,10 @@ int main(int argc, char *argv[])
 
         for (int i = 2; i < argc; i++) // checking the files in a loop
         {
-            foundWord = openFile(pWantedWord, argv[i], length, argc);
+            foundWord = openFile(pWantedWord, argv[i]);
         }
         return foundWord;
     }
-    return 0;
 }
 
 
